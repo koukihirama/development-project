@@ -28,6 +28,12 @@ public class ProductListServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+    	
+    	String sessionError = (String) request.getSession().getAttribute("error");
+    	if (sessionError != null) {
+    	    request.setAttribute("error", sessionError);
+    	    request.getSession().removeAttribute("error"); // 1回表示したら消す
+    	}
 
         // DBパスワード（環境変数が無ければローカル用に pass）
         String password = System.getenv("DB_PASSWORD");

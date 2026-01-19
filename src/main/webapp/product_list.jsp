@@ -32,23 +32,30 @@ List<ProductRow> products = (List<ProductRow>) request.getAttribute("products");
   <p>登録された商品はまだありません。</p>
 <% } else { %>
   <table border="1" cellpadding="6">
+  <tr>
+    <th>ID</th>
+    <th>商品名</th>
+    <th>価格</th>
+    <th>在庫</th>
+    <th>カテゴリ</th>
+    <th>操作</th>
+  </tr>
+
+  <% for (ProductRow p : products) { %>
     <tr>
-      <th>ID</th>
-      <th>商品名</th>
-      <th>価格</th>
-      <th>在庫</th>
-      <th>カテゴリ</th>
+      <td><%= p.getId() %></td>
+      <td><%= p.getName() %></td>
+      <td><%= p.getPrice() %></td>
+      <td><%= p.getStock() %></td>
+      <td><%= p.getCategoryName() %></td>
+      <td>
+        <a href="<%= request.getContextPath() %>/products/delete/confirm?id=<%= p.getId() %>">
+          削除
+        </a>
+      </td>
     </tr>
-    <% for (ProductRow p : products) { %>
-      <tr>
-        <td><%= p.getId() %></td>
-        <td><%= p.getName() %></td>
-        <td><%= p.getPrice() %></td>
-        <td><%= p.getStock() %></td>
-        <td><%= p.getCategoryName() %></td>
-      </tr>
-    <% } %>
-  </table>
+  <% } %>
+</table>
 <% } %>
 
 </body>
