@@ -49,6 +49,10 @@ List<ProductRow> products = (List<ProductRow>) request.getAttribute("products");
       <td><%= p.getStock() %></td>
       <td><%= p.getCategoryName() %></td>
       <td>
+        <a href="<%= request.getContextPath() %>/products/edit?id=<%= p.getId() %>">
+          編集
+        </a>
+        |
         <a href="<%= request.getContextPath() %>/products/delete/confirm?id=<%= p.getId() %>">
           削除
         </a>
