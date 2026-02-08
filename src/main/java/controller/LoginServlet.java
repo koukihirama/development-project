@@ -25,7 +25,8 @@ public class LoginServlet extends HttpServlet {
         String userId = request.getParameter("userId");
         String password = request.getParameter("password");
 
-        if ("test".equals(userId) && "test".equals(password)) {
+        //  正しい時にログイン成功
+        if (isValidCredential(userId, password)) {
             HttpSession session = request.getSession();
             session.setAttribute("loginUser", userId);
 
@@ -33,7 +34,12 @@ public class LoginServlet extends HttpServlet {
             return;
         }
 
+        //  間違ってる時にエラー表示
         request.setAttribute("error", "IDまたはパスワードが違います");
         request.getRequestDispatcher("/login.jsp").forward(request, response);
+    }
+    
+    static boolean isValidCredential(String userId, String password) {
+        return "test".equals(userId) && "test".equals(password);
     }
 }

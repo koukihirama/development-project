@@ -32,33 +32,18 @@ public class ProductCreateServlet extends HttpServlet {
         String stockStr = request.getParameter("stock");
         String categoryIdStr = request.getParameter("categoryId");
 
-        String error = null;
-
-        if (name == null || name.isBlank()) {
-            error = "商品名は必須です";
-        }
-
-        int price = 0;
-        int stock = 0;
-        int categoryId = 0;
-
-        try {
-            price = Integer.parseInt(priceStr);
-            stock = Integer.parseInt(stockStr);
-            categoryId = Integer.parseInt(categoryIdStr);
-
-            if (price < 0 || stock < 0) {
-                error = "価格と在庫は0以上で入力してください";
-            }
-        } catch (NumberFormatException e) {
-            error = "価格・在庫・カテゴリは正しい形式で入力してください";
-        }
+        String error = validateProductInput(name, priceStr, stockStr, categoryIdStr);
 
         if (error != null) {
             request.getSession().setAttribute("error", error);
             response.sendRedirect(request.getContextPath() + "/products/new");
             return;
         }
+
+        // ここから下は「パースしてDBに入れる」ので必要
+        int price = Integer.parseInt(priceStr);
+        int stock = Integer.parseInt(stockStr);
+        int categoryId = Integer.parseInt(categoryIdStr);
 
         String password = System.getenv("DB_PASSWORD");
         if (password == null || password.isBlank()) password = "pass";
@@ -87,5 +72,24 @@ public class ProductCreateServlet extends HttpServlet {
         } catch (Exception e) {
             throw new ServletException(e); // ←握りつぶさず原因を見える化
         }
+    }
+    static String validateProductInput(String name, String priceStr, String stockStr, String categoryIdStr) {
+        if (name == null || name.isBlank()) {
+            return "商品名は必須です";
+        }
+
+        try {
+            int price = Integer.parseInt(priceStr);
+            int stock = Integer.parseInt(stockStr);
+            Integer.parseInt(categoryIdStr); // 形式チェック
+
+            if (price < 0 || stock < 0) {
+                return "価格と在庫は0以上で入力してください";
+            }
+        } catch (NumberFormatException e) {
+            return "価格・在庫・カテゴリは正しい形式で入力してください";
+        }
+
+        return null; // エラーなし
     }
 }
