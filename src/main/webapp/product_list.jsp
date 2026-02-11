@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page import="java.util.List" %>
-<%@ page import="controller.ProductListServlet.ProductRow" %>
+<%@ page import="model.ProductRow" %>
 
 <!DOCTYPE html>
 <html>
@@ -9,6 +9,9 @@
   <title>商品一覧</title>
 </head>
 <body>
+
+<a href="<%= request.getContextPath() %>/logout">ログアウト</a>
+
 
 <h1>商品一覧</h1>
 
